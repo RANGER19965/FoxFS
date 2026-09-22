@@ -1,0 +1,26 @@
+name: Build FoxFS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Build Solution
+      run: msbuild FoxFS.sln /p:Configuration=Release /p:Platform=x86
+
+    - name: Upload Executable
+      uses: actions/upload-artifact@v3
+      with:
+        name: FoxFSArchiver-Exe
+        path: |
+          bin/Release/FoxFSArchiver.exe
+          Release/FoxFSArchiver.exe
+          **/FoxFSArchiver.exe
