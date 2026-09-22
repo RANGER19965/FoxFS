@@ -5,22 +5,22 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Add MSBuild to PATH
+    - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 
-    - name: Build Solution
-      run: msbuild FoxFS.sln /p:Configuration=Release /p:Platform=x86
+    - name: Build FoxFS
+      run: |
+        msbuild FoxFS.sln /p:Configuration=Release /p:Platform="Win32"
 
     - name: Upload Executable
       uses: actions/upload-artifact@v4
       with:
         name: FoxFSArchiver-Exe
         path: |
-          bin/Release/FoxFSArchiver.exe
-          Release/FoxFSArchiver.exe
-          **/FoxFSArchiver.exe
+          **/*.exe
+          !**/obj/**
